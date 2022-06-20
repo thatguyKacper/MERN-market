@@ -29,6 +29,18 @@ const listByOwner = async (params, credentials, signal) => {
   }
 };
 
+const read = async (params, signal) => {
+  try {
+    let response = await fetch('/api/shops/' + params.shopId, {
+      method: 'GET',
+      signal: signal,
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const list = async (signal) => {
   try {
     let response = await fetch('/api/shops', {
@@ -57,4 +69,4 @@ const remove = async (params, credentials) => {
   }
 };
 
-export { create, listByOwner, list, remove };
+export { create, listByOwner, list, remove, read };

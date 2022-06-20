@@ -94,7 +94,14 @@ export default function MyShops() {
               <span key={i}>
                 <ListItem button>
                   <ListItemAvatar>
-                    <Avatar />
+                    <Avatar
+                      src={
+                        '/api/shops/logo/' +
+                        shop._id +
+                        '?' +
+                        new Date().getTime()
+                      }
+                    />
                   </ListItemAvatar>
                   <ListItemText
                     primary={shop.name}
@@ -103,6 +110,11 @@ export default function MyShops() {
                   {auth.isAuthenticated().user &&
                     auth.isAuthenticated().user._id == shop.owner._id && (
                       <ListItemSecondaryAction>
+                        {/* <Link to={'/seller/shop/edit/' + shop._id}>
+                          <IconButton aria-label='Edit' color='primary'>
+                            <Edit />
+                          </IconButton>
+                        </Link> */}
                         <DeleteShop shop={shop} onRemove={removeShop} />
                       </ListItemSecondaryAction>
                     )}

@@ -2,6 +2,7 @@ import Shop from '../models/shop.model';
 import errorHandler from './../helpers/dbErrorHandler';
 import formidable from 'formidable';
 import fs from 'fs';
+import defaultImage from './../../client/assets/images/default.png';
 
 const create = (req, res) => {
   let form = new formidable.IncomingForm();
@@ -59,6 +60,11 @@ const shopByID = async (req, res, next, id) => {
   }
 };
 
+const read = (req, res) => {
+  req.shop.image = undefined;
+  return res.json(req.shop);
+};
+
 const remove = async (req, res) => {
   try {
     let shop = req.shop;
@@ -82,4 +88,25 @@ const list = async (req, res) => {
   }
 };
 
-export default { create, listByOwner, list, remove, shopByID };
+const photo = (req, res, next) => {
+  if (req.shop.image.data) {
+    res.set('Content-Type', req.shop.image.contentType);
+    return res.send(req.shop.image.data);
+  }
+  next();
+};
+
+const defaultPhoto = (req, res) => {
+  return res.sendFile(process.cwd() + defaultImage);
+};
+
+export default {
+  create,
+  listByOwner,
+  list,
+  remove,
+  shopByID,
+  read,
+  photo,
+  defaultPhoto,
+};

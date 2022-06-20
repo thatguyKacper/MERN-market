@@ -11,6 +11,7 @@ import Profile from './user/Profile';
 import NewShop from './shop/NewShop';
 import MyShops from './shop/MyShops';
 import Shops from './shop/Shops';
+import Shop from './shop/Shop';
 
 const MainRouter = () => {
   return (
@@ -33,6 +34,7 @@ const MainRouter = () => {
           <Route path='/seller/shops' element={<MyShops />} />
         </Route>
         <Route path='/shops/all' element={<Shops />} />
+        <Route path='/shops/:shopId' element={<Shop />} />
       </Routes>
     </div>
   );

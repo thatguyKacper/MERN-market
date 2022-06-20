@@ -19,7 +19,14 @@ router.route('/api/shops').get(shopCtrl.list);
 
 router
   .route('/api/shops/:shopId')
+  .get(shopCtrl.read)
   .delete(authCtrl.requireSignin, shopCtrl.remove);
+
+router
+  .route('/api/shops/logo/:shopId')
+  .get(shopCtrl.photo, shopCtrl.defaultPhoto);
+
+router.route('/api/shops/defaultphoto').get(shopCtrl.defaultPhoto);
 
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopByID);

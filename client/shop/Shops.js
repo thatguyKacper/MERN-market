@@ -73,7 +73,15 @@ export default function Shops() {
                 <Divider />
                 <ListItem button>
                   <ListItemAvatar>
-                    <Avatar className={classes.avatar} />
+                    <Avatar
+                      className={classes.avatar}
+                      src={
+                        '/api/shops/logo/' +
+                        shop._id +
+                        '?' +
+                        new Date().getTime()
+                      }
+                    />
                   </ListItemAvatar>
                   <div className={classes.details}>
                     <Typography
