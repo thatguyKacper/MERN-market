@@ -8,6 +8,8 @@ import Users from './user/Users';
 import Signup from './user/Signup';
 import Signin from './auth/Signin';
 import Profile from './user/Profile';
+import NewShop from './shop/NewShop';
+import MyShops from './shop/MyShops';
 
 const MainRouter = () => {
   return (
@@ -22,6 +24,13 @@ const MainRouter = () => {
           <Route path='/user/edit/:userId' element={<EditProfile />} />
         </Route>
         <Route path='/user/:userId' element={<Profile />} />
+
+        <Route path='/seller/shop/new' element={<PrivateRoute />}>
+          <Route path='/seller/shop/new' element={<NewShop />} />
+        </Route>
+        <Route path='/seller/shops' element={<PrivateRoute />}>
+          <Route path='/seller/shops' element={<MyShops />} />
+        </Route>
       </Routes>
     </div>
   );
