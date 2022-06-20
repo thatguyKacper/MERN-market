@@ -8,6 +8,10 @@ import Button from '@material-ui/core/Button';
 import auth from './../auth/auth-helper';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+const isPartActive = (location, path) => {
+  if (location.includes(path)) return { color: '#ffffff' };
+};
+
 const isActive = (location, path) => {
   if (location === path) return { color: '#ffffff' };
 };
@@ -49,6 +53,22 @@ function Menu() {
         )}
         {auth.isAuthenticated() && (
           <span>
+            {auth.isAuthenticated().user.seller && (
+              <>
+                <Link to='/seller/shops'>
+                  <Button style={isPartActive(location.pathname, '/seller/')}>
+                    My Shops
+                  </Button>
+                </Link>
+                <Link to='/myauctions'>
+                  <Button
+                    style={isPartActive(location.pathname, '/myauctions')}
+                  >
+                    My Auctions
+                  </Button>
+                </Link>
+              </>
+            )}
             <Link to={'/user/' + auth.isAuthenticated().user._id}>
               <Button
                 style={isActive(

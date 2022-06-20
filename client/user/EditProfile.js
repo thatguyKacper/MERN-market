@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import auth from './../auth/auth-helper';
 import { read, update } from './api-user.js';
 import { Navigate, useParams } from 'react-router-dom';
+import { FormControlLabel, Switch } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -43,7 +44,7 @@ export default function EditProfile() {
     name: '',
     password: '',
     email: '',
-    open: false,
+    seller: false,
     error: '',
     redirectToProfile: false,
   });
@@ -64,7 +65,12 @@ export default function EditProfile() {
       if (data && data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, name: data.name, email: data.email });
+        setValues({
+          ...values,
+          name: data.name,
+          email: data.email,
+          seller: data.seller,
+        });
       }
     });
     return function cleanup() {
@@ -77,6 +83,7 @@ export default function EditProfile() {
       name: values.name || undefined,
       email: values.email || undefined,
       password: values.password || undefined,
+      seller: values.seller || undefined,
     };
     update(
       {
@@ -90,7 +97,9 @@ export default function EditProfile() {
       if (data && data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, userId: data._id, redirectToProfile: true });
+        auth.updateUser(data, () => {
+          setValues({ ...values, userId: data._id, redirectToProfile: true });
+        });
       }
     });
   };
@@ -98,9 +107,14 @@ export default function EditProfile() {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleCheck = (event, checked) => {
+    setValues({ ...values, seller: checked });
+  };
+
   if (values.redirectToProfile) {
     return <Navigate to={'/user/' + values.userId} />;
   }
+
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -135,7 +149,23 @@ export default function EditProfile() {
           onChange={handleChange('password')}
           margin='normal'
         />
-        <br />{' '}
+        <Typography variant='subtitle1' className={classes.subheading}>
+          Seller Account
+        </Typography>
+        <FormControlLabel
+          control={
+            <Switch
+              classes={{
+                checked: classes.checked,
+                bar: classes.bar,
+              }}
+              checked={values.seller}
+              onChange={handleCheck}
+            />
+          }
+          label={values.seller ? 'Active' : 'Inactive'}
+        />
+        <br />
         {values.error && (
           <Typography component='p' color='error'>
             <Icon color='error' className={classes.error}>
