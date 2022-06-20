@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
@@ -13,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import auth from './../auth/auth-helper';
 import { listByOwner } from './api-shop.js';
 import { Navigate, Link } from 'react-router-dom';
+import DeleteShop from './DeleteShop';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +65,13 @@ export default function MyShops() {
     };
   }, []);
 
+  const removeShop = (shop) => {
+    const updatedShops = [...shops];
+    const index = updatedShops.indexOf(shop);
+    updatedShops.splice(index, 1);
+    setShops(updatedShops);
+  };
+
   if (redirectToSignin) {
     return <Navigate to='/signin' />;
   }
@@ -91,6 +100,12 @@ export default function MyShops() {
                     primary={shop.name}
                     secondary={shop.description}
                   />
+                  {auth.isAuthenticated().user &&
+                    auth.isAuthenticated().user._id == shop.owner._id && (
+                      <ListItemSecondaryAction>
+                        <DeleteShop shop={shop} onRemove={removeShop} />
+                      </ListItemSecondaryAction>
+                    )}
                 </ListItem>
                 <Divider />
               </span>

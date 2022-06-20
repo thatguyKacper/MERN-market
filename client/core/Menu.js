@@ -37,6 +37,11 @@ function Menu() {
         <Link to='/users'>
           <Button style={isActive(location.pathname, '/users')}>Users</Button>
         </Link>
+        <Link to='/shops/all'>
+          <Button style={isActive(location.pathname, '/shops/all')}>
+            All Shops
+          </Button>
+        </Link>
         {!auth.isAuthenticated() && (
           <span>
             <Link to='/signup'>

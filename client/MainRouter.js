@@ -10,6 +10,7 @@ import Signin from './auth/Signin';
 import Profile from './user/Profile';
 import NewShop from './shop/NewShop';
 import MyShops from './shop/MyShops';
+import Shops from './shop/Shops';
 
 const MainRouter = () => {
   return (
@@ -31,6 +32,7 @@ const MainRouter = () => {
         <Route path='/seller/shops' element={<PrivateRoute />}>
           <Route path='/seller/shops' element={<MyShops />} />
         </Route>
+        <Route path='/shops/all' element={<Shops />} />
       </Routes>
     </div>
   );

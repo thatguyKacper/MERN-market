@@ -43,4 +43,43 @@ const listByOwner = async (req, res) => {
   }
 };
 
-export default { create, listByOwner };
+const shopByID = async (req, res, next, id) => {
+  try {
+    let shop = await Shop.findById(id).populate('owner', '_id name').exec();
+    if (!shop)
+      return res.status('400').json({
+        error: 'Shop not found',
+      });
+    req.shop = shop;
+    next();
+  } catch (err) {
+    return res.status('400').json({
+      error: 'Could not retrieve shop',
+    });
+  }
+};
+
+const remove = async (req, res) => {
+  try {
+    let shop = req.shop;
+    let deletedShop = shop.remove();
+    res.json(deletedShop);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+const list = async (req, res) => {
+  try {
+    let shops = await Shop.find();
+    res.json(shops);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+export default { create, listByOwner, list, remove, shopByID };
